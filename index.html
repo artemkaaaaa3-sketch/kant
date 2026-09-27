@@ -1,0 +1,1051 @@
+<title>КАНТ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #F6F1E8;
+    --paper-raised: #FFFFFF;
+    --ink: #2B241C;
+    --muted: #8A7D6B;
+    --accent: #B8863E;
+    --accent-2: #6B5A45;
+    --line: rgba(43,36,28,0.12);
+    --line-strong: rgba(43,36,28,0.22);
+    --shadow: 0 24px 60px -30px rgba(43,36,28,0.28);
+    --profile-color: #A7ABAE;
+
+    --font-display: "PT Serif", Georgia, serif;
+    --font-body: "Golos Text", "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", "Consolas", monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 12.8px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,svg{ max-width: 100%; display:block; }
+  a{ color: inherit; }
+  ::selection{ background: var(--accent); color: #fff; }
+
+  .wrap{ max-width: 1180px; margin-inline: auto; padding-inline: clamp(20px, 5vw, 48px); }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 700; line-height: 1.12; text-wrap: balance; margin: 0; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+  }
+  .eyebrow::before{ content:""; width: 22px; height: 2px; background: var(--accent); }
+  .placeholder{ color: var(--accent-2); font-weight: 600; }
+
+  .btn{
+    position: relative;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.9em 1.6em;
+    border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    text-decoration: none;
+  }
+  .btn:focus-visible{ outline: 3px solid var(--accent-2); outline-offset: 3px; }
+  .btn.ghost{ background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  .btn.hot{ background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* animated drawing border (hover) */
+  .bd{ position: absolute; background: var(--ink); pointer-events: none; border-radius: 2px; }
+  .bd-t, .bd-b{ height: 2px; left: 6px; right: 6px; transform: scaleX(0); }
+  .bd-l, .bd-r{ width: 2px; top: 6px; bottom: 6px; transform: scaleY(0); }
+  .bd-t{ top: -7px; transform-origin: left; }
+  .bd-b{ bottom: -7px; transform-origin: right; }
+  .bd-r{ right: -7px; transform-origin: top; }
+  .bd-l{ left: -7px; transform-origin: bottom; }
+  .btn .bd{ transition: transform 0.15s ease; }
+  .btn:hover .bd-t{ transform: scaleX(1); transition: transform 0.2s ease 0s; }
+  .btn:hover .bd-r{ transform: scaleY(1); transition: transform 0.2s ease 0.15s; }
+  .btn:hover .bd-b{ transform: scaleX(1); transition: transform 0.2s ease 0.3s; }
+  .btn:hover .bd-l{ transform: scaleY(1); transition: transform 0.2s ease 0.45s; }
+
+  /* ---------- Header ---------- */
+  header{
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--paper) 85%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{ display: flex; align-items: center; justify-content: space-between; padding-block: 16px; gap: 20px; }
+  .logo{ font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); display:flex; align-items:center; gap:10px; }
+  .logo .mark{ width: 18px; height: 18px; border: 3px solid var(--accent); border-right: none; border-bottom: none; flex: none; border-radius: 3px 0 0 0; }
+  .nav-links{ display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: 0.8rem; }
+  .nav-links a{ text-decoration: none; opacity: 0.75; }
+  .nav-links a:hover{ opacity: 1; }
+  .nav-phone{ font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; text-decoration:none; white-space:nowrap; }
+  @media (max-width: 980px){ .nav-links{ display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{ position: relative; overflow: hidden; padding-block: clamp(48px, 8vw, 88px) clamp(56px, 8vw, 96px); border-bottom: 1px solid var(--line); }
+  .hero::before, .hero::after{ content:""; position:absolute; border-radius:50%; filter: blur(70px); z-index:0; pointer-events:none; }
+  .hero::before{ width:440px; height:440px; background: radial-gradient(circle, var(--accent), transparent 70%); opacity:0.28; top:-140px; right:-100px; animation: drift1 20s ease-in-out infinite alternate; }
+  .hero::after{ width:360px; height:360px; background: radial-gradient(circle, var(--accent-2), transparent 70%); opacity:0.2; bottom:-120px; left:6%; animation: drift2 24s ease-in-out infinite alternate; }
+  @keyframes drift1{ from{ transform: translate(0,0); } to{ transform: translate(-36px,24px); } }
+  @keyframes drift2{ from{ transform: translate(0,0); } to{ transform: translate(24px,-18px); } }
+  .hero-grid{ position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+
+  @keyframes fadeUp{ from{ opacity: 0; transform: translateY(16px); } to{ opacity: 1; transform: none; } }
+  .anim{ animation: fadeUp 0.7s ease both; }
+  .anim-1{ animation-delay: 0s; }
+  .anim-2{ animation-delay: .08s; }
+  .anim-3{ animation-delay: .16s; }
+  .anim-4{ animation-delay: .24s; }
+  .anim-5{ animation-delay: .32s; }
+  .anim-6{ animation-delay: .18s; }
+
+  .reveal{ opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in-view{ opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero::before, .hero::after{ animation: none; }
+    .anim{ animation: none; }
+  }
+
+  .hero h1{ font-size: clamp(2.1rem, 5vw, 3.5rem); margin-top: 16px; font-style: italic; }
+  .hero h1 span{ color: var(--accent); font-style: normal; }
+  .hero-sub{ max-width: 46ch; color: var(--muted); font-size: 1.05rem; margin-top: 20px; }
+  .hero-cta{ display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero-stats{ display: grid; grid-template-columns: repeat(4,auto); gap: clamp(18px, 4vw, 40px); margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .stat b{ display: block; font-family: var(--font-display); font-variant-numeric: tabular-nums; font-size: 1.5rem; font-weight: 700; }
+  .stat span{ color: var(--muted); font-size: 0.8rem; }
+  @media (max-width: 700px){ .hero-stats{ grid-template-columns: repeat(2,auto); } }
+
+  /* configurator card (lives in hero) */
+  .configurator{ background: var(--paper-raised); border: 1px solid var(--line); border-radius: 20px; padding: 26px clamp(18px,3vw,30px) 30px; box-shadow: var(--shadow); }
+  .configurator .eyebrow{ color: var(--accent-2); }
+  .configurator .eyebrow::before{ background: var(--accent-2); }
+  .configurator h3{ font-size: 1.05rem; margin-top: 8px; font-family: var(--font-body); font-weight: 700; }
+  .drag-hint{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; text-align:center; margin-top: 8px; }
+  .cfg-label{ font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-align:center; margin: 18px 0 8px; }
+  .cfg-label:first-of-type{ margin-top: 22px; }
+
+  .rig{ perspective: 1100px; margin: 22px auto 6px; display:flex; align-items:center; justify-content:center; gap: 18px; }
+  .gimbal-stage{ position: relative; flex: none; }
+  .rig-shadow{
+    position: absolute; left: 50%; bottom: -16px; width: 220px; height: 24px; margin-left: -110px;
+    background: radial-gradient(ellipse, rgba(43,36,28,0.35), transparent 72%);
+    filter: blur(2px); pointer-events: none;
+  }
+  .gimbal{ transform-style: preserve-3d; width: 300px; height: 140px; cursor: grab; touch-action: none; flex: none; }
+  .gimbal:active{ cursor: grabbing; }
+  .bar{ position: relative; width: 300px; height: var(--bh, 70px); transform-style: preserve-3d; transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); }
+  .bar.pulse{ transform: scale(1.06); }
+  .face{ position: absolute; top: 50%; left: 50%; transition: clip-path 0.3s ease; }
+  .face-front, .face-back{
+    width: 300px; height: var(--bh, 70px);
+    margin-left: -150px; margin-top: calc(var(--bh, 70px) * -0.5);
+    background:
+      repeating-linear-gradient(100deg, rgba(255,255,255,0.14) 0px, rgba(255,255,255,0.14) 1px, transparent 1px, transparent 3px),
+      linear-gradient(165deg, color-mix(in srgb, var(--profile-color) 82%, white), var(--profile-color) 55%, color-mix(in srgb, var(--profile-color) 70%, black));
+  }
+  .face-front{ transform: translateZ(20px); }
+  .face-back{ transform: rotateY(180deg) translateZ(20px); filter: brightness(0.55); }
+  .face-front::after{
+    content:""; position:absolute; left:0; right:0; top:20%; height:5px;
+    background: rgba(0,0,0,0.32); box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .face-left, .face-right{
+    width: 40px; height: var(--bh, 70px);
+    margin-left: -20px; margin-top: calc(var(--bh, 70px) * -0.5);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--profile-color) 80%, white), color-mix(in srgb, var(--profile-color) 60%, black));
+    clip-path: none;
+  }
+  .face-right{ transform: rotateY(90deg) translateZ(150px); filter: brightness(0.92); }
+  .face-left{ transform: rotateY(-90deg) translateZ(150px); filter: brightness(0.75); }
+  .bar[data-shape="l"] .face-left, .bar[data-shape="l"] .face-right{
+    clip-path: polygon(0% 0%, 35% 0%, 35% 65%, 100% 65%, 100% 100%, 0% 100%);
+  }
+  .bar[data-shape="u"] .face-left, .bar[data-shape="u"] .face-right{
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 78% 0%, 78% 70%, 22% 70%, 22% 0%);
+  }
+  .face-top, .face-bottom{
+    width: 300px; height: 40px;
+    margin-left: -150px; margin-top: -20px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--profile-color) 88%, white), var(--profile-color) 60%, color-mix(in srgb, var(--profile-color) 75%, black));
+  }
+  .face-top{ transform: rotateX(90deg) translateZ(calc(var(--bh, 70px) * 0.5)); filter: brightness(1.18); }
+  .face-bottom{ transform: rotateX(-90deg) translateZ(calc(var(--bh, 70px) * 0.5)); filter: brightness(0.5); }
+
+  .caliper{ display:flex; align-items:center; gap: 10px; height: var(--bh, 70px); flex: none; }
+  .caliper-line{ position: relative; width: 1px; height: 100%; background: var(--line-strong); }
+  .caliper-line::before, .caliper-line::after{ content:""; position:absolute; left: -5px; width: 11px; height: 1px; background: var(--line-strong); }
+  .caliper-line::before{ top: 0; }
+  .caliper-line::after{ bottom: 0; }
+  .caliper-label{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-2); white-space: nowrap; }
+
+  .cfg-row{ display:flex; flex-wrap: wrap; gap: 8px; justify-content:center; }
+  .size-btn{
+    font-family: var(--font-mono); font-size: 0.8rem; padding: 7px 12px; border-radius: 6px;
+    border: 1px solid var(--line-strong); background: none; color: var(--ink); cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .size-btn:hover{ transform: translateY(-1px); }
+  .size-btn[aria-pressed="true"]{ background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .swatches{ display:flex; gap: 10px; justify-content:center; flex-wrap: wrap; }
+  .swatch{ width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line-strong); cursor: pointer; padding:0; transition: transform 0.15s ease; }
+  .swatch:hover{ transform: scale(1.1); }
+  .swatch[aria-pressed="true"]{ outline: 2px solid var(--accent); outline-offset: 2px; }
+  .swatch-label{ text-align:center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+
+  /* ---------- Marquee ---------- */
+  .marquee{ background: var(--ink); color: var(--paper); overflow: hidden; white-space: nowrap; border-bottom: 1px solid var(--line); }
+  .marquee-track{ display: inline-flex; align-items: center; animation: scroll 28s linear infinite; }
+  .marquee span{ font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; padding: 14px 26px; display: inline-flex; align-items: center; gap: 26px; }
+  .marquee span::after{ content: "✦"; color: var(--accent); font-size:0.8rem; }
+  @keyframes scroll{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation: none; } }
+
+  /* ---------- Sections ---------- */
+  section{ padding-block: clamp(56px, 8vw, 96px); }
+  .section-head{ display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+  .section-head h2{ font-size: clamp(1.5rem, 3.6vw, 2.1rem); margin-top: 12px; }
+  .section-note{ max-width: 32ch; color: var(--muted); font-size: 1.05rem; }
+  .surface{ background: var(--paper-raised); border-block: 1px solid var(--line); }
+
+  /* profile types — illustrated scenes */
+  .types-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .type-card{ background: var(--paper-raised); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease; }
+  .type-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); }
+  .type-scene{ aspect-ratio: 16/10; }
+  .type-scene svg{ width: 100%; height: 100%; }
+  .type-body{ padding: 18px 20px 22px; }
+  .type-card h3{ font-size: 1.05rem; }
+  .type-card p{ color: var(--muted); font-size: 0.8rem; margin: 8px 0 0; }
+  @media (max-width: 860px){ .types-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px){ .types-grid{ grid-template-columns: 1fr; } }
+
+  .feat-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  .feat b{ display:block; font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 8px; }
+  .feat p{ color: var(--muted); font-size: 0.8rem; margin: 0; }
+  @media (max-width: 860px){ .feat-grid{ grid-template-columns: 1fr 1fr; } }
+
+  .process-grid{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; counter-reset: step; }
+  .process-step{ position: relative; padding-top: 18px; border-top: 3px solid var(--line-strong); }
+  .process-step::before{
+    counter-increment: step; content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); display:block; margin-bottom: 10px;
+  }
+  .process-step h3{ font-size: 1.05rem; font-family: var(--font-body); }
+  .process-step p{ color: var(--muted); font-size: 0.8rem; margin: 8px 0 0; }
+  @media (max-width: 980px){ .process-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px){ .process-grid{ grid-template-columns: 1fr; } }
+
+  .spec-wrap{ overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--paper-raised); box-shadow: var(--shadow); }
+  table{ border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th{ text-align: left; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  tbody td{ padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 0.8rem; }
+  tbody tr:last-child td{ border-bottom: none; }
+  .mm{ font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent-2); font-weight: 600; }
+
+  .price-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .price-card{ border:1px solid var(--line); border-radius:16px; padding:26px; background:var(--paper-raised); display:flex; flex-direction:column; transition: transform 0.22s ease, box-shadow 0.22s ease; }
+  .price-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow); }
+  .price-card.featured{ background: color-mix(in srgb, var(--accent) 8%, var(--paper-raised)); border-color: var(--accent); }
+  .price-name{ font-family: var(--font-mono); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--accent-2); }
+  .price-card.featured .price-name{ color: var(--accent); }
+  .price-value{ font-family: var(--font-display); font-size: 2.1rem; margin: 12px 0 4px; }
+  .price-value span{ font-size: 0.8rem; font-family: var(--font-body); font-weight: 600; }
+  .price-list{ list-style:none; padding:0; margin: 18px 0 22px; display:flex; flex-direction:column; gap:8px; font-size:0.8rem; }
+  .price-list li{ display:flex; gap:8px; }
+  .price-list li::before{ content:"—"; color: var(--accent-2); }
+  .price-card.featured .price-list li::before{ color: var(--accent); }
+  .price-card .btn{ margin-top:auto; justify-content:center; }
+  @media (max-width: 860px){ .price-grid{ grid-template-columns:1fr; } }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 18px; }
+  .chip{ font-family: var(--font-mono); font-size: 0.8rem; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+
+  .compare{ position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: var(--paper-raised); }
+  .compare-layer{ position: absolute; inset: 0; }
+  .compare-layer svg{ width: 100%; height: 100%; }
+  .compare-after{ clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+  .compare-tag{ position: absolute; top: 16px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 5px 10px; border-radius: 999px; background: color-mix(in srgb, var(--paper) 75%, transparent); border: 1px solid var(--line-strong); pointer-events: none; }
+  .compare-tag.before{ left: 16px; }
+  .compare-tag.after{ right: 16px; }
+  .compare-divider{ position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; background: #fff; transform: translateX(-1px); pointer-events: none; box-shadow: 0 0 0 1px rgba(0,0,0,0.15); }
+  .compare-divider::after{
+    content: "⇔"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--ink);
+    display: flex; align-items: center; justify-content: center; font-size: 12.8px; box-shadow: var(--shadow);
+  }
+  .compare-range{ position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+
+  .case-card{ display:grid; grid-template-columns: 1fr 1fr; gap: 32px; border:1px solid var(--line); border-radius: 20px; padding: clamp(24px,4vw,40px); background: var(--paper-raised); align-items: center; }
+  .case-metrics{ display:grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+  .case-metrics b{ display:block; font-family: var(--font-display); font-size: 1.5rem; color: var(--accent-2); }
+  .case-metrics span{ color: var(--muted); font-size: 0.8rem; }
+  .case-copy p{ color: var(--muted); }
+  @media (max-width: 860px){ .case-card{ grid-template-columns: 1fr; } }
+
+  .mount-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:18px; }
+  .mount-card{ border:1px solid var(--line); border-radius:16px; padding:22px; background:var(--paper-raised); transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease; }
+  .mount-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); }
+  .mount-card h3{ font-size: 1.05rem; font-family: var(--font-body); }
+  .mount-card p{ color:var(--muted); font-size:0.8rem; margin:8px 0 0; }
+  @media (max-width: 860px){ .mount-grid{ grid-template-columns:1fr; } }
+
+  .testi-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .testi-card{ border:1px dashed var(--line-strong); border-radius:16px; padding:22px; }
+  .testi-card p{ font-size: 0.8rem; margin: 0 0 14px; color: var(--ink); }
+  .testi-card footer{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+  @media (max-width: 860px){ .testi-grid{ grid-template-columns:1fr; } }
+
+  .office-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+  .office-card{ border:1px dashed var(--line-strong); border-radius:16px; padding:20px; transition: transform 0.22s ease, border-color 0.22s ease; }
+  .office-card:hover{ transform: translateY(-3px); border-color: var(--accent); }
+  .office-card .city{ font-family: var(--font-display); font-size:1.05rem; }
+  .office-card .addr{ color:var(--muted); font-size:0.8rem; margin-top:6px; }
+  @media (max-width: 860px){ .office-grid{ grid-template-columns:1fr; } }
+
+  .faq-list{ display:flex; flex-direction:column; gap: 10px; max-width: 760px; }
+  .faq-item{ border:1px solid var(--line); border-radius: 14px; background: var(--paper-raised); padding: 4px 20px; }
+  .faq-item summary{
+    cursor:pointer; padding: 16px 0; font-weight: 700; list-style:none; display:flex; justify-content:space-between; gap: 16px; align-items:center;
+  }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary::after{ content:"+"; font-family: var(--font-mono); color: var(--accent); font-size:1.25rem; flex:none; transition: transform 0.2s ease; }
+  .faq-item[open] summary::after{ transform: rotate(45deg); }
+  .faq-item p{ color: var(--muted); font-size: 0.8rem; margin: 0 0 18px; }
+
+  .form-band{ background: var(--ink); color: var(--paper); border-radius: 24px; padding: clamp(32px, 6vw, 60px); display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items:center; }
+  .form-band .eyebrow{ color: var(--accent); }
+  .form-band .eyebrow::before{ background: var(--accent); }
+  .form-band h2{ font-size: clamp(1.5rem, 3.2vw, 2.1rem); margin-top: 10px; }
+  .cb-form{ display:flex; flex-direction:column; gap: 12px; }
+  .cb-form input[type="tel"]{
+    padding: 13px 15px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
+    background: color-mix(in srgb, var(--paper) 10%, transparent); color: var(--paper); font-family: var(--font-body); font-size: 1.05rem;
+  }
+  .cb-form input::placeholder{ color: color-mix(in srgb, var(--paper) 55%, transparent); }
+  .cb-consent{ display:flex; gap: 10px; align-items: flex-start; font-size: 0.8rem; color: color-mix(in srgb, var(--paper) 70%, transparent); }
+  .cb-consent input{ margin-top: 3px; }
+  .cb-form .btn{ background: var(--accent); border-color: var(--accent); color: #fff; justify-content:center; }
+  .cb-status{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); min-height: 1.3em; }
+  @media (max-width: 860px){ .form-band{ grid-template-columns: 1fr; } }
+
+  footer.site{ border-top: 1px solid var(--line); padding-block: 40px; }
+  .foot-grid{ display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; font-size: 0.8rem; }
+  .foot-grid h4{ font-family: var(--font-mono); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 12px; }
+  .foot-grid ul{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .foot-grid a{ text-decoration: none; opacity: 0.85; }
+  .foot-grid a:hover{ opacity: 1; color: var(--accent); }
+  .foot-bottom{ margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--muted); font-size: 0.8rem; flex-wrap: wrap; gap: 10px; }
+  @media (max-width: 860px){ .foot-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px){ .foot-grid{ grid-template-columns: 1fr; } }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline: 3px solid var(--accent-2); outline-offset: 2px; }
+</style>
+
+<header>
+<meta name="robots" content="noindex">
+  <div class="wrap nav">
+    <a class="logo" href="#top"><span class="mark"></span>КАНТ</a>
+    <ul class="nav-links">
+      <li><a href="#types">Профили</a></li>
+      <li><a href="#pricing">Цены</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <a class="nav-phone" href="tel:+7">+7 (<span class="placeholder">XXX</span>) <span class="placeholder">XXX-XX-XX</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow anim anim-1">Производим с <span class="placeholder">[ГОД]</span></span>
+        <h1 class="anim anim-2">Профиль,<br>который держит <span>линию</span></h1>
+        <p class="hero-sub anim anim-3">Алюминиевые плинтусы и профили для пола, потолка и теневых швов. В наличии на складе — отгрузка за 1 день. Покраска в любой RAL с гарантией на покрытие 25 лет.</p>
+        <div class="hero-cta anim anim-4">
+          <a class="btn hot" href="#contacts">Подобрать профиль<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></a>
+          <a class="btn ghost" href="#types">Смотреть виды<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></a>
+        </div>
+        <div class="hero-stats anim anim-5">
+          <div class="stat"><b>1 день</b><span>отгрузка со склада</span></div>
+          <div class="stat"><b id="stat-years" data-count="25">0 лет</b><span>гарантия на краску</span></div>
+          <div class="stat"><b>40–100 мм</b><span>высота в наличии</span></div>
+          <div class="stat"><b>с <span class="placeholder">[ГОД]</span></b><span>на рынке</span></div>
+        </div>
+      </div>
+
+      <div class="configurator anim anim-6">
+        <span class="eyebrow">Конфигуратор</span>
+        <h3>Соберите профиль под интерьер</h3>
+        <div class="rig">
+          <div class="gimbal-stage">
+            <div class="gimbal" id="gimbal" role="img" aria-label="3D-модель профиля, перетащите для вращения">
+              <div class="bar" id="bar">
+                <div class="face face-top"></div>
+                <div class="face face-bottom"></div>
+                <div class="face face-left" id="face-left"></div>
+                <div class="face face-right" id="face-right"></div>
+                <div class="face face-back" id="face-back"></div>
+                <div class="face face-front" id="face-front"></div>
+              </div>
+            </div>
+            <div class="rig-shadow" id="rig-shadow"></div>
+          </div>
+          <div class="caliper" id="caliper">
+            <div class="caliper-line"></div>
+            <span class="caliper-label" id="caliper-label">70 мм</span>
+          </div>
+        </div>
+        <p class="drag-hint">← потяните модель, чтобы повернуть →</p>
+
+        <p class="cfg-label">Форма сечения</p>
+        <div class="cfg-row" id="shape-row">
+          <button class="size-btn" aria-pressed="true" data-shape="straight">Прямой</button>
+          <button class="size-btn" data-shape="l">L-образный</button>
+          <button class="size-btn" data-shape="u">Скрытого монтажа</button>
+        </div>
+
+        <p class="cfg-label">Высота, мм</p>
+        <div class="cfg-row" id="size-row">
+          <button class="size-btn" data-mm="40">40</button>
+          <button class="size-btn" data-mm="50">50</button>
+          <button class="size-btn" data-mm="60">60</button>
+          <button class="size-btn" aria-pressed="true" data-mm="70">70</button>
+          <button class="size-btn" data-mm="80">80</button>
+          <button class="size-btn" data-mm="100">100</button>
+        </div>
+
+        <p class="cfg-label">Цвет покрытия</p>
+        <div class="swatches" id="swatch-row">
+          <button class="swatch" aria-pressed="true" data-color="#A7ABAE" data-name="Серебро матовое · стандарт" style="background:#A7ABAE"></button>
+          <button class="swatch" data-color="#111111" data-name="RAL 9005 · Чёрный" style="background:#111111"></button>
+          <button class="swatch" data-color="#4A3B33" data-name="RAL 8019 · Бронза" style="background:#4A3B33"></button>
+          <button class="swatch" data-color="#9C7B3F" data-name="RAL 1036 · Шампань" style="background:#9C7B3F"></button>
+          <button class="swatch" data-color="#B08D3E" data-name="Золото · под заказ" style="background:#B08D3E"></button>
+        </div>
+        <p class="swatch-label" id="swatch-label">Серебро матовое · стандарт</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>L-профиль</span><span>С кабель-каналом</span><span>Скрытого монтажа</span><span>С подсветкой</span><span>Теневой шов</span><span>Для потолка</span><span>Для ГКЛ</span>
+      <span>L-профиль</span><span>С кабель-каналом</span><span>Скрытого монтажа</span><span>С подсветкой</span><span>Теневой шов</span><span>Для потолка</span><span>Для ГКЛ</span>
+    </div>
+  </div>
+
+  <section id="types">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Виды профилей</span><h2>Профиль под задачу</h2></div>
+        <p class="section-note">Один и тот же материал — разное сечение под конкретную задачу монтажа.</p>
+      </div>
+      <div class="types-grid">
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF6EE"/><stop offset="1" stop-color="#EDE2CF"/></linearGradient>
+              <linearGradient id="floor1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C7A54"/><stop offset="1" stop-color="#74562F"/></linearGradient>
+              <linearGradient id="brass1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="0.5" stop-color="#C79A4B"/><stop offset="1" stop-color="#8B6432"/></linearGradient>
+            </defs>
+            <rect width="280" height="116" fill="url(#wall1)"/>
+            <rect y="116" width="280" height="59" fill="url(#floor1)"/>
+            <ellipse cx="60" cy="116" rx="90" ry="16" fill="rgba(30,20,10,0.18)"/>
+            <rect x="20" y="98" width="230" height="22" rx="3" fill="url(#brass1)"/>
+          </svg></div>
+          <div class="type-body"><h3>L-образный</h3><p>Базовый угловой профиль на стыке пола и стены.</p></div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF6EE"/><stop offset="1" stop-color="#EDE2CF"/></linearGradient>
+              <linearGradient id="floor2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C7A54"/><stop offset="1" stop-color="#74562F"/></linearGradient>
+              <linearGradient id="brass2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="0.5" stop-color="#C79A4B"/><stop offset="1" stop-color="#8B6432"/></linearGradient>
+            </defs>
+            <rect width="280" height="116" fill="url(#wall2)"/>
+            <rect y="116" width="280" height="59" fill="url(#floor2)"/>
+            <ellipse cx="60" cy="116" rx="90" ry="16" fill="rgba(30,20,10,0.18)"/>
+            <rect x="20" y="98" width="230" height="22" rx="3" fill="url(#brass2)"/>
+            <rect x="20" y="106" width="230" height="6" fill="#3A2F22"/>
+            <path d="M250,109 q10,4 18,-2" fill="none" style="stroke:#B8B0A0" stroke-width="2"/>
+          </svg></div>
+          <div class="type-body"><h3>С кабель-каналом</h3><p>Скрывает провода вдоль плинтуса без штробления.</p></div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF6EE"/><stop offset="1" stop-color="#EDE2CF"/></linearGradient>
+              <linearGradient id="floor3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C7A54"/><stop offset="1" stop-color="#74562F"/></linearGradient>
+            </defs>
+            <rect width="280" height="116" fill="url(#wall3)"/>
+            <rect y="116" width="280" height="59" fill="url(#floor3)"/>
+            <ellipse cx="60" cy="116" rx="90" ry="16" fill="rgba(30,20,10,0.28)"/>
+            <rect x="18" y="110" width="244" height="8" fill="#3A2F22"/>
+          </svg></div>
+          <div class="type-body"><h3>Скрытого монтажа</h3><p>Плинтус не виден — только тонкая тень у стены.</p></div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF6EE"/><stop offset="1" stop-color="#EDE2CF"/></linearGradient>
+              <linearGradient id="floor4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C7A54"/><stop offset="1" stop-color="#74562F"/></linearGradient>
+              <linearGradient id="brass4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="0.5" stop-color="#C79A4B"/><stop offset="1" stop-color="#8B6432"/></linearGradient>
+              <radialGradient id="glow4" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFE9B0" stop-opacity="0.9"/><stop offset="1" stop-color="#FFE9B0" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="280" height="116" fill="url(#wall4)"/>
+            <rect y="116" width="280" height="59" fill="url(#floor4)"/>
+            <ellipse cx="60" cy="116" rx="90" ry="16" fill="rgba(30,20,10,0.18)"/>
+            <rect x="10" y="80" width="260" height="40" fill="url(#glow4)"/>
+            <rect x="20" y="98" width="230" height="22" rx="3" fill="url(#brass4)"/>
+            <rect x="20" y="96" width="230" height="3" fill="#FFE9B0"/>
+          </svg></div>
+          <div class="type-body"><h3>С подсветкой</h3><p>Паз под LED-ленту по всей длине профиля.</p></div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE2CF"/><stop offset="1" stop-color="#FBF6EE"/></linearGradient>
+            </defs>
+            <rect width="280" height="175" fill="url(#wall5)"/>
+            <rect x="0" y="0" width="280" height="10" fill="#3A2F22"/>
+            <ellipse cx="140" cy="14" rx="150" ry="14" fill="rgba(30,20,10,0.22)"/>
+          </svg></div>
+          <div class="type-body"><h3>Теневой шов</h3><p>Формирует ровный технический зазор у потолка.</p></div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-scene"><svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE2CF"/><stop offset="1" stop-color="#FBF6EE"/></linearGradient>
+              <linearGradient id="brass6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="0.5" stop-color="#C79A4B"/><stop offset="1" stop-color="#8B6432"/></linearGradient>
+            </defs>
+            <rect width="280" height="175" fill="url(#wall6)"/>
+            <rect x="0" y="16" width="280" height="4" fill="#C9BFA8"/>
+            <rect x="20" y="0" width="230" height="18" rx="3" fill="url(#brass6)"/>
+          </svg></div>
+          <div class="type-body"><h3>Потолочный ГКЛ</h3><p>Примыкание гипсокартона без мокрой штукатурки.</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="surface">
+    <div class="wrap">
+      <div class="feat-grid">
+        <div class="feat"><b>Ударопрочность</b><p>Алюминий не трескается и не скалывается при ударе, в отличие от ПВХ.</p></div>
+        <div class="feat"><b>Экологичность</b><p>Не выделяет летучих соединений — подходит для жилых помещений.</p></div>
+        <div class="feat"><b>25 лет на краску</b><p>Порошковое покрытие держит цвет без выгорания и сколов.</p></div>
+        <div class="feat"><b>Отгрузка за 1 день</b><p>Стандартные размеры и цвета — всегда в наличии на складе.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Процесс</span><h2>Как мы работаем</h2></div>
+        <p class="section-note">От заявки до отгрузки — без скрытых этапов и лишних согласований.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step"><h3>Заявка</h3><p>Звонок или форма на сайте — опишите высоту, цвет, метраж.</p></div>
+        <div class="process-step"><h3>Подбор сечения</h3><p>Поможем выбрать профиль под задачу монтажа и интерьер.</p></div>
+        <div class="process-step"><h3>Покраска RAL</h3><p>Если нужен цвет под заказ — красим за 1 день.</p></div>
+        <div class="process-step"><h3>Отгрузка</h3><p>Стандартные позиции — со склада в день заказа.</p></div>
+        <div class="process-step"><h3>Доставка</h3><p>Транспортной компанией по РФ и СНГ.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="specs" class="surface">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Характеристики</span><h2>Размеры и покрытия</h2></div>
+        <p class="section-note">Стандарт — матовое серебро. Остальные цвета — под заказ, готовы за 1 день.</p>
+      </div>
+      <div class="spec-wrap">
+        <table>
+          <thead><tr><th>Высота</th><th>Применение</th><th>Станд. цвет</th><th>Под заказ</th></tr></thead>
+          <tbody>
+            <tr><td class="mm">40 мм</td><td>Пол, ГКЛ-потолок</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+            <tr><td class="mm">50 мм</td><td>Пол</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+            <tr><td class="mm">60 мм</td><td>Пол, теневой шов</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+            <tr><td class="mm">70 мм</td><td>Пол, High-Tech интерьеры</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+            <tr><td class="mm">80 мм</td><td>Пол, коммерческие помещения</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+            <tr><td class="mm">100 мм</td><td>Пол, витрины, шоурумы</td><td>Серебро матовое</td><td>Чёрный, бронза, шампань, золото</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Цены</span><h2>Сколько стоит профиль</h2></div>
+        <p class="section-note">Точный расчёт зависит от сечения, метража и покраски — пришлём смету за 30 минут.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <span class="price-name">Стандарт</span>
+          <div class="price-value">от [ЦЕНА] <span>₽/м</span></div>
+          <ul class="price-list">
+            <li>Серебро матовое, со склада</li>
+            <li>Отгрузка в день заказа</li>
+            <li>Высоты 40–100 мм</li>
+          </ul>
+          <a class="btn ghost" href="#contacts">Рассчитать<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></a>
+        </div>
+        <div class="price-card featured">
+          <span class="price-name">Premium</span>
+          <div class="price-value">от [ЦЕНА] <span>₽/м</span></div>
+          <ul class="price-list">
+            <li>Покраска в любой RAL за 1 день</li>
+            <li>Чёрный, бронза, шампань, золото</li>
+            <li>Гарантия на покрытие 25 лет</li>
+          </ul>
+          <a class="btn hot" href="#contacts">Рассчитать<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></a>
+        </div>
+        <div class="price-card">
+          <span class="price-name">Опт</span>
+          <div class="price-value">по запросу</div>
+          <ul class="price-list">
+            <li>От партии — индивидуальная цена</li>
+            <li>Профиль по чертежам заказчика</li>
+            <li>Отсрочка и разные формы оплаты</li>
+          </ul>
+          <a class="btn ghost" href="#contacts">Обсудить<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface" id="colors">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Покраска</span><h2>Как меняется профиль в цвете</h2></div>
+        <p class="section-note">Потяните ползунок — сравните необработанный алюминий и профиль после порошковой покраски.</p>
+      </div>
+      <div class="compare" id="compare" style="--pos:50%">
+        <div class="compare-layer compare-before">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="140" fill="#F6F1E8"/>
+            <g fill="none" style="stroke:#C9BFA8" stroke-width="2"><path d="M40,20 L40,110"/><path d="M20,110 L180,110"/></g>
+            <path d="M28,110 L28,92 L64,92" fill="none" stroke="#9AA0A4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="compare-layer compare-after">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="paintGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3a3a"/><stop offset="0.5" stop-color="#111111"/><stop offset="1" stop-color="#000000"/></linearGradient></defs>
+            <rect width="200" height="140" fill="#EDE2CF"/>
+            <g fill="none" style="stroke:#C9BFA8" stroke-width="2"><path d="M40,20 L40,110"/><path d="M20,110 L180,110"/></g>
+            <path d="M28,110 L28,92 L64,92" fill="none" stroke="url(#paintGrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="compare-tag before">До</span>
+        <span class="compare-tag after">После RAL 9005</span>
+        <div class="compare-divider"></div>
+        <input type="range" min="0" max="100" value="50" class="compare-range" id="compare-range" aria-label="Сравнение профиля до и после покраски">
+      </div>
+      <p style="max-width:60ch; color:var(--muted); margin-top:24px;">Помимо плинтусов производим профиль, фольгу, листы, трубы и заготовки по индивидуальным чертежам заказчика — от эскиза до партии.</p>
+      <div class="chip-row">
+        <span class="chip">Профиль</span><span class="chip">Фольга</span><span class="chip">Листы</span><span class="chip">Трубы</span><span class="chip">Чертежи заказчика</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Кейс</span><h2>Пример проекта</h2></div>
+      </div>
+      <div class="case-card">
+        <div class="case-copy">
+          <span class="eyebrow" style="color:var(--accent-2)">[Название проекта / шоурум]</span>
+          <h3 style="margin-top:10px; font-size:1.25rem;">Профиль 70 мм со скрытой подсветкой</h3>
+          <p>Раскрой в размер, покраска в RAL 9005 и упаковка партии под монтаж на объекте — от согласования макета до отгрузки.</p>
+        </div>
+        <div class="case-metrics">
+          <div><b>[XXX] м</b><span>метраж партии</span></div>
+          <div><b>3 дня</b><span>раскрой и покраска</span></div>
+          <div><b>RAL 9005</b><span>цвет покрытия</span></div>
+          <div><b>1 партия</b><span>доставка на объект</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Монтаж</span><h2>Как крепится профиль</h2></div>
+      </div>
+      <div class="mount-grid">
+        <div class="mount-card"><h3>Монтажный скотч</h3><p>Двусторонний скотч — самый быстрый способ, подходит для большинства поверхностей.</p></div>
+        <div class="mount-card"><h3>Жидкие гвозди</h3><p>Баланс скорости и надёжности для неровных стен.</p></div>
+        <div class="mount-card"><h3>Монтажный клей</h3><p>Экономичный вариант при монтаже большого объёма профиля.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Отзывы</span><h2>Что говорят клиенты</h2></div>
+        <p class="section-note">Раздел под реальные отзывы — пришлёте тексты, разместим вместо заглушек.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card"><p>«[Текст отзыва клиента о работе с компанией]»</p><footer>[Имя] · [Компания]</footer></div>
+        <div class="testi-card"><p>«[Текст отзыва клиента о работе с компанией]»</p><footer>[Имя] · [Компания]</footer></div>
+        <div class="testi-card"><p>«[Текст отзыва клиента о работе с компанией]»</p><footer>[Имя] · [Компания]</footer></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">География</span><h2>Представительства</h2></div>
+      </div>
+      <div class="office-grid">
+        <div class="office-card"><div class="city">[Город 1]</div><div class="addr">[Адрес офиса]</div></div>
+        <div class="office-card"><div class="city">[Город 2]</div><div class="addr">[Адрес офиса]</div></div>
+        <div class="office-card"><div class="city">[Город 3]</div><div class="addr">[Адрес офиса]</div></div>
+      </div>
+      <p style="color:var(--muted); font-size:0.8rem; margin-top:18px;">Доставка по России и СНГ — уточняйте адреса в других регионах у менеджера.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Вопросы</span><h2>Отвечаем до заявки</h2></div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Какой минимальный заказ?</summary>
+          <p>Работаем от [минимальный метраж] — стандартные размеры и цвета есть на складе, поэтому небольшие заказы отгружаем без задержек.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Красите профиль под конкретный RAL?</summary>
+          <p>Да, порошковая покраска по каталогу RAL с гарантией на покрытие 25 лет. Срок покраски — 1 день сверх обычной отгрузки.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Делаете профиль по своим чертежам?</summary>
+          <p>Да, производим профиль по индивидуальным чертежам заказчика — пришлите эскиз или ТЗ, посчитаем стоимость и сроки.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Доставляете в регионы?</summary>
+          <p>Отправляем по всей России и СНГ транспортными компаниями. Представительства — в нескольких городах, адреса уточняйте у менеджера.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Работаете с НДС и без?</summary>
+          <p>Да, доступны оба варианта оформления документов — уточните нужный при оформлении заявки.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что если в партии окажется брак?</summary>
+          <p>Заменим или доработаем позиции за свой счёт — проверяйте партию при получении и сообщайте менеджеру.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="wrap">
+      <div class="form-band">
+        <div>
+          <span class="eyebrow">Обратная связь</span>
+          <h2>Оставьте номер — подберём профиль</h2>
+          <p style="color: color-mix(in srgb, var(--paper) 70%, transparent); margin-top: 14px; max-width: 40ch; font-family:var(--font-body);">Ответим в рабочее время. Расчёт стоимости — бесплатно.</p>
+        </div>
+        <form class="cb-form" id="cb-form">
+          <input type="tel" placeholder="+7 (___) ___-__-__" required aria-label="Телефон">
+          <label class="cb-consent">
+            <input type="checkbox" required>
+            <span>Согласен(-на) с политикой конфиденциальности</span>
+          </label>
+          <button class="btn" type="submit">Отправить заявку<span class="bd bd-t"></span><span class="bd bd-r"></span><span class="bd bd-b"></span><span class="bd bd-l"></span></button>
+          <div class="cb-status" id="cb-status" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Кант</h4>
+        <p style="color:var(--muted); max-width: 30ch; margin:0;">Производство и продажа алюминиевого профиля и плинтуса.</p>
+      </div>
+      <div>
+        <h4>Информация</h4>
+        <ul><li><a href="#types">Профили</a></li><li><a href="#pricing">Цены</a></li><li><a href="#faq">Вопросы</a></li></ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>+7 (<span class="placeholder">XXX</span>) <span class="placeholder">XXX-XX-XX</span></li>
+          <li>[email@kant-profile.ru]</li>
+          <li>ИНН [XXXXXXXXXX]</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Соцсети</h4>
+        <ul><li>[Instagram]</li><li>[ВКонтакте]</li><li>[YouTube]</li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span class="placeholder">[ГОД]</span>–2026 «Кант»</span>
+      <span>Политика конфиденциальности</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var gimbal = document.getElementById('gimbal');
+    var bar = document.getElementById('bar');
+    var shadow = document.getElementById('rig-shadow');
+    var faceFront = document.getElementById('face-front');
+    var faceBack = document.getElementById('face-back');
+    var faceLeft = document.getElementById('face-left');
+    var faceRight = document.getElementById('face-right');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var rx = -16;
+    var angle = -28;
+    var restAngle = -28;
+    var velocity = 0;
+    var idleT = 0;
+    var state = reduced ? 'still' : 'idle';
+    var lastT = null;
+    var lastMoveX = 0, lastMoveT = 0;
+
+    function lighting(deg){
+      var rad = deg * Math.PI / 180;
+      var f = 0.55 + 0.55 * (Math.cos(rad) + 1) / 2;
+      var b = 0.55 + 0.55 * (Math.cos(rad + Math.PI) + 1) / 2;
+      var r = 0.55 + 0.55 * (Math.sin(rad) + 1) / 2;
+      var l = 0.55 + 0.55 * (Math.sin(rad + Math.PI) + 1) / 2;
+      faceFront.style.filter = 'brightness(' + f.toFixed(2) + ')';
+      faceBack.style.filter = 'brightness(' + b.toFixed(2) + ')';
+      faceRight.style.filter = 'brightness(' + r.toFixed(2) + ')';
+      faceLeft.style.filter = 'brightness(' + l.toFixed(2) + ')';
+      var scaleX = 0.78 + 0.22 * Math.abs(Math.cos(rad));
+      shadow.style.transform = 'scaleX(' + scaleX.toFixed(2) + ')';
+    }
+
+    function apply(){
+      gimbal.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + angle + 'deg)';
+      lighting(angle);
+    }
+    apply();
+
+    function frame(t){
+      var dt = lastT === null ? 16 : (t - lastT);
+      lastT = t;
+
+      if(state === 'inertia'){
+        angle += velocity * dt;
+        velocity *= Math.exp(-dt * 0.006);
+        if(Math.abs(velocity) < 0.003){
+          state = reduced ? 'still' : 'idle';
+          restAngle = angle;
+          idleT = 0;
+        }
+        apply();
+      } else if(state === 'idle'){
+        idleT += dt;
+        angle = restAngle + Math.sin(idleT * 0.0009) * 14;
+        apply();
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    function down(x){
+      state = 'drag';
+      lastMoveX = x; lastMoveT = performance.now();
+      velocity = 0;
+      gimbal.style.cursor = 'grabbing';
+    }
+    function move(x){
+      if(state !== 'drag') return;
+      var now = performance.now();
+      var dx = x - lastMoveX;
+      var dt = Math.max(now - lastMoveT, 1);
+      angle += dx * 0.35;
+      velocity = (dx * 0.35) / dt;
+      lastMoveX = x; lastMoveT = now;
+      apply();
+    }
+    function up(){
+      if(state !== 'drag') return;
+      gimbal.style.cursor = 'grab';
+      if(reduced || Math.abs(velocity) < 0.01){
+        state = reduced ? 'still' : 'idle';
+        restAngle = angle;
+        idleT = 0;
+      } else {
+        state = 'inertia';
+      }
+    }
+
+    gimbal.addEventListener('pointerdown', function(e){ down(e.clientX); gimbal.setPointerCapture(e.pointerId); });
+    gimbal.addEventListener('pointermove', function(e){ move(e.clientX); });
+    gimbal.addEventListener('pointerup', up);
+    gimbal.addEventListener('pointercancel', up);
+
+    function pulse(){
+      if(reduced) return;
+      bar.classList.remove('pulse');
+      void bar.offsetWidth;
+      bar.classList.add('pulse');
+      setTimeout(function(){ bar.classList.remove('pulse'); }, 350);
+    }
+
+    var shapeBtns = document.querySelectorAll('#shape-row .size-btn');
+    shapeBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        shapeBtns.forEach(function(x){ x.removeAttribute('aria-pressed'); });
+        b.setAttribute('aria-pressed', 'true');
+        var shape = b.getAttribute('data-shape');
+        if(shape === 'straight'){ bar.removeAttribute('data-shape'); }
+        else { bar.setAttribute('data-shape', shape); }
+        pulse();
+      });
+    });
+
+    var sizeBtns = document.querySelectorAll('#size-row .size-btn');
+    var caliperLabel = document.getElementById('caliper-label');
+    sizeBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        sizeBtns.forEach(function(x){ x.removeAttribute('aria-pressed'); });
+        b.setAttribute('aria-pressed', 'true');
+        var mm = b.getAttribute('data-mm');
+        bar.style.setProperty('--bh', mm + 'px');
+        caliperLabel.textContent = mm + ' мм';
+        pulse();
+      });
+    });
+
+    var swatches = document.querySelectorAll('.swatch');
+    var swatchLabel = document.getElementById('swatch-label');
+    swatches.forEach(function(s){
+      s.addEventListener('click', function(){
+        swatches.forEach(function(x){ x.removeAttribute('aria-pressed'); });
+        s.setAttribute('aria-pressed', 'true');
+        bar.style.setProperty('--profile-color', s.getAttribute('data-color'));
+        swatchLabel.textContent = s.getAttribute('data-name');
+        pulse();
+      });
+    });
+
+    var compare = document.getElementById('compare');
+    var compareRange = document.getElementById('compare-range');
+    if(compare && compareRange){
+      compareRange.addEventListener('input', function(){
+        compare.style.setProperty('--pos', compareRange.value + '%');
+      });
+    }
+
+    var form = document.getElementById('cb-form');
+    var status = document.getElementById('cb-status');
+    if(form){
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        status.textContent = 'Заявка принята — это демо-форма без реальной отправки.';
+      });
+    }
+
+    if('IntersectionObserver' in window){
+      if(!reduced){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){ en.target.classList.add('in-view'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.15 });
+
+        function revealGroup(selector, staggerMs){
+          document.querySelectorAll(selector).forEach(function(el, i){
+            el.classList.add('reveal');
+            el.style.transitionDelay = Math.min(i * staggerMs, staggerMs * 4) + 'ms';
+            io.observe(el);
+          });
+        }
+        revealGroup('.section-head', 0);
+        revealGroup('.type-card', 60);
+        revealGroup('.feat', 70);
+        revealGroup('.process-step', 70);
+        revealGroup('.spec-wrap', 0);
+        revealGroup('.price-card', 80);
+        revealGroup('.compare', 0);
+        revealGroup('.chip-row', 0);
+        revealGroup('.case-card', 0);
+        revealGroup('.mount-card', 80);
+        revealGroup('.testi-card', 80);
+        revealGroup('.office-card', 80);
+        revealGroup('.faq-list', 0);
+        revealGroup('.form-band', 0);
+      }
+
+      var yearsEl = document.getElementById('stat-years');
+      if(yearsEl){
+        var target = parseInt(yearsEl.getAttribute('data-count'), 10);
+        var counted = false;
+        var countIo = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting && !counted){
+              counted = true;
+              if(reduced){ yearsEl.textContent = target + ' лет'; return; }
+              var start = performance.now();
+              var dur = 900;
+              function step(t){
+                var p = Math.min((t - start) / dur, 1);
+                var val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                yearsEl.textContent = val + ' лет';
+                if(p < 1) requestAnimationFrame(step);
+              }
+              requestAnimationFrame(step);
+              countIo.unobserve(yearsEl);
+            }
+          });
+        }, { threshold: 0.6 });
+        countIo.observe(yearsEl);
+      }
+    }
+  })();
+</script>
