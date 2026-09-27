@@ -363,6 +363,23 @@
   @media (max-width: 560px){ .foot-grid{ grid-template-columns: 1fr; } }
 
   a:focus-visible, button:focus-visible, summary:focus-visible{ outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+/* цели под палец: в подвале ссылки были высотой 20 px, палец промахивался */
+@media(max-width:760px){
+  footer a, .ftr a, .foot a{display:inline-flex;align-items:center;min-height:44px}
+}
+
+/* на 320 px конфигуратор шириной 405 px вылезал за экран: модель 300 px плюс подписи */
+@media(max-width:400px){
+  .configurator{padding-inline:12px}
+  .rig{gap:8px;transform:scale(.82);transform-origin:center top;margin-bottom:0}
+  .gimbal{width:240px}
+}
+
+/* первый экран оставался в две колонки на телефоне: конфигуратор уезжал за край */
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:28px}
+}
 </style>
 
 <header>
@@ -462,7 +479,7 @@
   <section id="types">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Виды профилей</span><h2>Профиль под задачу</h2></div>
+        <div><h2>Профиль под задачу</h2></div>
         <p class="section-note">Один и тот же материал — разное сечение под конкретную задачу монтажа.</p>
       </div>
       <div class="types-grid">
@@ -574,7 +591,7 @@
   <section>
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Процесс</span><h2>Как мы работаем</h2></div>
+        <div>Процесс</span><h2>Как мы работаем</h2></div>
         <p class="section-note">От заявки до отгрузки — без скрытых этапов и лишних согласований.</p>
       </div>
       <div class="process-grid">
@@ -590,7 +607,7 @@
   <section id="specs" class="surface">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Характеристики</span><h2>Размеры и покрытия</h2></div>
+        <div>Характеристики</span><h2>Размеры и покрытия</h2></div>
         <p class="section-note">Стандарт — матовое серебро. Остальные цвета — под заказ, готовы за 1 день.</p>
       </div>
       <div class="spec-wrap">
@@ -612,7 +629,7 @@
   <section id="pricing">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Цены</span><h2>Сколько стоит профиль</h2></div>
+        <div>Цены</span><h2>Сколько стоит профиль</h2></div>
         <p class="section-note">Точный расчёт зависит от сечения, метража и покраски — пришлём смету за 30 минут.</p>
       </div>
       <div class="price-grid">
@@ -653,7 +670,7 @@
   <section class="surface" id="colors">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Покраска</span><h2>Как меняется профиль в цвете</h2></div>
+        <div>Покраска</span><h2>Как меняется профиль в цвете</h2></div>
         <p class="section-note">Потяните ползунок — сравните необработанный алюминий и профиль после порошковой покраски.</p>
       </div>
       <div class="compare" id="compare" style="--pos:50%">
@@ -687,7 +704,7 @@
   <section>
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Кейс</span><h2>Пример проекта</h2></div>
+        <div>Кейс</span><h2>Пример проекта</h2></div>
       </div>
       <div class="case-card">
         <div class="case-copy">
@@ -708,7 +725,7 @@
   <section class="surface">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Монтаж</span><h2>Как крепится профиль</h2></div>
+        <div>Монтаж</span><h2>Как крепится профиль</h2></div>
       </div>
       <div class="mount-grid">
         <div class="mount-card"><h3>Монтажный скотч</h3><p>Двусторонний скотч — самый быстрый способ, подходит для большинства поверхностей.</p></div>
@@ -721,7 +738,7 @@
   <section>
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Отзывы</span><h2>Что говорят клиенты</h2></div>
+        <div>Отзывы</span><h2>Что говорят клиенты</h2></div>
         <p class="section-note">Раздел под реальные отзывы — пришлёте тексты, разместим вместо заглушек.</p>
       </div>
       <div class="testi-grid">
@@ -735,7 +752,7 @@
   <section class="surface">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">География</span><h2>Представительства</h2></div>
+        <div>География</span><h2>Представительства</h2></div>
       </div>
       <div class="office-grid">
         <div class="office-card"><div class="city">[Город 1]</div><div class="addr">[Адрес офиса]</div></div>
@@ -749,7 +766,7 @@
   <section id="faq">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Вопросы</span><h2>Отвечаем до заявки</h2></div>
+        <div>Вопросы</span><h2>Отвечаем до заявки</h2></div>
       </div>
       <div class="faq-list">
         <details class="faq-item" open>
@@ -784,7 +801,7 @@
     <div class="wrap">
       <div class="form-band">
         <div>
-          <span class="eyebrow">Обратная связь</span>
+          Обратная связь</span>
           <h2>Оставьте номер — подберём профиль</h2>
           <p style="color: color-mix(in srgb, var(--paper) 70%, transparent); margin-top: 14px; max-width: 40ch; font-family:var(--font-body);">Ответим в рабочее время. Расчёт стоимости — бесплатно.</p>
         </div>
